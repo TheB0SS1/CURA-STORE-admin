@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Cura Store | Admin Dashboard - Multi-Level Access</title>
+  <title>Cura Store | Professional Admin System</title>
   <style>
     * {
       margin: 0;
@@ -13,12 +13,11 @@
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f5f7fb;
+      background: #f0f4f8;
       color: #1a1a1a;
       min-height: 100vh;
     }
 
-    /* Login Container */
     .login-container {
       max-width: 450px;
       margin: 80px auto;
@@ -35,12 +34,6 @@
       color: #1a1a2e;
     }
 
-    .login-container p {
-      color: #64748b;
-      margin-bottom: 28px;
-      font-size: 0.85rem;
-    }
-
     .login-container input {
       width: 100%;
       padding: 14px 18px;
@@ -48,13 +41,6 @@
       border-radius: 50px;
       font-size: 1rem;
       margin-bottom: 18px;
-      transition: 0.2s;
-      font-family: inherit;
-    }
-
-    .login-container input:focus {
-      outline: none;
-      border-color: #1a1a2e;
     }
 
     .login-container button {
@@ -65,14 +51,7 @@
       padding: 14px;
       border-radius: 50px;
       font-weight: 600;
-      font-size: 1rem;
       cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .login-container button:hover {
-      background: #16213e;
-      transform: scale(1.02);
     }
 
     .error-msg {
@@ -82,7 +61,6 @@
       display: none;
     }
 
-    /* Admin Dashboard */
     .dashboard-container {
       display: none;
     }
@@ -107,11 +85,9 @@
     h1 {
       font-size: 1.6rem;
       font-weight: 600;
-      letter-spacing: -0.5px;
       background: linear-gradient(135deg, #1a1a2e, #16213e);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      background-clip: text;
     }
 
     .user-info {
@@ -121,7 +97,6 @@
       background: white;
       padding: 8px 20px;
       border-radius: 60px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
     .user-role {
@@ -143,15 +118,77 @@
       padding: 6px 16px;
       border-radius: 40px;
       cursor: pointer;
-      font-weight: 500;
-      font-size: 0.75rem;
-      transition: 0.2s;
     }
 
-    .logout-btn:hover {
-      background: #dc2626;
+    /* Money Section */
+    .money-section {
+      background: white;
+      border-radius: 24px;
+      padding: 20px;
+      margin-bottom: 24px;
     }
 
+    .money-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .money-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .money-card {
+      flex: 1;
+      min-width: 180px;
+      background: #f8fafc;
+      padding: 16px;
+      border-radius: 20px;
+      text-align: center;
+    }
+
+    .money-card .amount {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 10px 0;
+    }
+
+    .money-card input {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      border: 1px solid #e2e8f0;
+      border-radius: 40px;
+      text-align: center;
+    }
+
+    .money-card button {
+      background: #1a1a2e;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 40px;
+      cursor: pointer;
+      margin: 3px;
+    }
+
+    .total-money {
+      background: #1a1a2e;
+      color: white;
+      padding: 16px;
+      border-radius: 20px;
+      text-align: center;
+    }
+
+    .total-money .amount {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    /* Stats */
     .stats {
       display: flex;
       gap: 20px;
@@ -163,15 +200,10 @@
       background: white;
       padding: 18px 24px;
       border-radius: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       flex: 1;
       min-width: 150px;
-    }
-
-    .stat-card h4 {
-      font-size: 0.75rem;
-      color: #64748b;
-      margin-bottom: 8px;
+      cursor: pointer;
+      transition: 0.2s;
     }
 
     .stat-card .value {
@@ -180,67 +212,92 @@
       color: #1a1a2e;
     }
 
-    .filter-bar {
+    /* Tabs */
+    .tabs-container {
       display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
+      gap: 8px;
       margin-bottom: 24px;
       background: white;
-      padding: 16px;
-      border-radius: 20px;
+      padding: 8px;
+      border-radius: 60px;
+      flex-wrap: wrap;
     }
 
-    .filter-btn {
-      background: #f1f5f9;
+    .tab-btn {
+      background: transparent;
       border: none;
-      padding: 8px 20px;
-      border-radius: 40px;
+      padding: 12px 28px;
+      border-radius: 50px;
       cursor: pointer;
-      font-weight: 500;
-      font-size: 0.8rem;
+      font-weight: 600;
       transition: 0.2s;
     }
 
-    .filter-btn.active {
+    .tab-btn.active {
       background: #1a1a2e;
       color: white;
     }
 
-    .export-btn {
-      background: #10b981;
+    /* Product Summary Button */
+    .summary-btn {
+      background: #8b5cf6;
       color: white;
       border: none;
-      padding: 8px 20px;
+      padding: 10px 24px;
       border-radius: 40px;
       cursor: pointer;
       font-weight: 600;
-      font-size: 0.8rem;
-      margin-left: auto;
+      margin-bottom: 20px;
     }
 
-    .export-btn:hover {
-      background: #059669;
+    .product-summary-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
     }
 
+    .product-summary-content {
+      background: white;
+      border-radius: 28px;
+      padding: 24px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .product-summary-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    /* Orders Grid */
     .orders-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
       gap: 20px;
     }
 
     .order-card {
       background: white;
       border-radius: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
       overflow: hidden;
-      transition: all 0.2s ease;
+      transition: 0.2s;
       border: 1px solid #e9ecef;
     }
 
-    .order-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.12);
-    }
+    .order-card.pending { border-left: 4px solid #f59e0b; }
+    .order-card.confirmed { border-left: 4px solid #10b981; }
+    .order-card.completed { border-left: 4px solid #3b82f6; }
 
     .order-header {
       background: #1a1a2e;
@@ -248,23 +305,20 @@
       padding: 12px 16px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
       flex-wrap: wrap;
       gap: 8px;
     }
 
-    .order-id {
+    .order-status {
       font-size: 0.65rem;
-      font-family: monospace;
-      background: rgba(255,255,255,0.2);
-      padding: 3px 8px;
+      padding: 3px 10px;
       border-radius: 30px;
+      font-weight: 600;
     }
 
-    .order-date {
-      font-size: 0.65rem;
-      opacity: 0.85;
-    }
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-confirmed { background: #d1fae5; color: #065f46; }
+    .status-completed { background: #dbeafe; color: #1e40af; }
 
     .order-body {
       padding: 16px;
@@ -280,15 +334,6 @@
     .customer-info p {
       margin: 5px 0;
       font-size: 0.8rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .customer-info strong {
-      min-width: 65px;
-      color: #334155;
     }
 
     .gender-badge {
@@ -308,41 +353,12 @@
       padding-top: 10px;
     }
 
-    .items-title {
-      font-weight: 700;
-      font-size: 0.75rem;
-      margin-bottom: 8px;
-      color: #0f172a;
-    }
-
     .item-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       padding: 6px 0;
-      border-bottom: 1px solid #f1f5f9;
       font-size: 0.75rem;
-    }
-
-    .item-name {
-      font-weight: 500;
-      flex: 2;
-    }
-
-    .item-qty {
-      background: #e2e8f0;
-      padding: 2px 8px;
-      border-radius: 20px;
-      font-weight: 600;
-      font-size: 0.65rem;
-      margin: 0 8px;
-    }
-
-    .item-price {
-      font-weight: 600;
-      color: #2d3748;
-      min-width: 60px;
-      text-align: right;
+      border-bottom: 1px solid #f1f5f9;
     }
 
     .order-total {
@@ -351,16 +367,36 @@
       border-top: 2px solid #e2e8f0;
       text-align: right;
       font-weight: 800;
-      font-size: 1rem;
-      color: #1e293b;
     }
+
+    .order-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .confirm-btn { background: #10b981; color: white; }
+    .complete-btn { background: #3b82f6; color: white; }
+    .whatsapp-btn { background: #25D366; color: white; }
+    .delete-btn { background: #ef4444; color: white; }
 
     .empty-state {
       text-align: center;
       padding: 60px 20px;
       background: white;
       border-radius: 28px;
-      color: #64748b;
     }
 
     footer {
@@ -368,24 +404,18 @@
       text-align: center;
       font-size: 0.7rem;
       color: #94a3b8;
-      border-top: 1px solid #e2e8f0;
       padding-top: 24px;
+      border-top: 1px solid #e2e8f0;
     }
 
     @media (max-width: 640px) {
-      .orders-grid {
-        grid-template-columns: 1fr;
-      }
-      .export-btn {
-        margin-left: 0;
-        width: 100%;
-      }
+      .orders-grid { grid-template-columns: 1fr; }
+      .tab-btn { padding: 8px 16px; font-size: 0.75rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- Login Section -->
 <div id="loginSection" class="login-container">
   <h2>🔐 Cura Store</h2>
   <p>Admin Portal — Enter your credentials</p>
@@ -394,496 +424,290 @@
   <div id="loginError" class="error-msg">❌ Invalid password. Please try again.</div>
 </div>
 
-<!-- Admin Dashboard Section -->
 <div id="dashboardSection" class="dashboard-container">
   <div class="container">
     <div class="header">
       <h1>🦷 Cura Store | Admin Dashboard</h1>
       <div class="user-info">
         <span id="userRoleBadge" class="user-role"></span>
-        <span id="userNameDisplay" style="font-weight:500;"></span>
+        <span id="userNameDisplay"></span>
         <button id="logoutBtn" class="logout-btn">🚪 Logout</button>
       </div>
     </div>
 
-    <div class="stats">
-      <div class="stat-card">
-        <h4>Total Orders</h4>
-        <div class="value" id="totalOrders">0</div>
+    <!-- Money Section -->
+    <div class="money-section">
+      <div class="money-title">💰 Cash Management</div>
+      <div class="money-grid">
+        <div class="money-card"><h4>💵 Cash</h4><div class="amount" id="cashAmount">0 EGP</div><input type="number" id="cashInput" placeholder="Amount"><button id="addCashBtn">+ Add</button><button id="subtractCashBtn" style="background:#ef4444;">- Sub</button></div>
+        <div class="money-card"><h4>📱 Vodafone Cash</h4><div class="amount" id="vodafoneAmount">0 EGP</div><input type="number" id="vodafoneInput" placeholder="Amount"><button id="addVodafoneBtn">+ Add</button><button id="subtractVodafoneBtn" style="background:#ef4444;">- Sub</button></div>
+        <div class="money-card"><h4>🏦 InstaPay</h4><div class="amount" id="instapayAmount">0 EGP</div><input type="number" id="instapayInput" placeholder="Amount"><button id="addInstapayBtn">+ Add</button><button id="subtractInstapayBtn" style="background:#ef4444;">- Sub</button></div>
       </div>
-      <div class="stat-card">
-        <h4>Total Revenue</h4>
-        <div class="value" id="totalRevenue">0 EGP</div>
-      </div>
-      <div class="stat-card">
-        <h4>Male Orders</h4>
-        <div class="value" id="maleOrders">0</div>
-      </div>
-      <div class="stat-card">
-        <h4>Female Orders</h4>
-        <div class="value" id="femaleOrders">0</div>
-      </div>
+      <div class="total-money"><h4>📊 Total Balance</h4><div class="amount" id="totalBalance">0 EGP</div></div>
     </div>
 
-    <div class="filter-bar">
-      <button class="filter-btn active" data-filter="all">📋 All Orders</button>
-      <button class="filter-btn" data-filter="male">👨 Male Orders</button>
-      <button class="filter-btn" data-filter="female">👩 Female Orders</button>
-      <button id="exportExcelBtn" class="export-btn">📊 Export as Excel</button>
+    <div class="stats">
+      <div class="stat-card" data-tab="pending"><h4>📋 Pending</h4><div class="value" id="pendingCount">0</div></div>
+      <div class="stat-card" data-tab="confirmed"><h4>✅ Confirmed</h4><div class="value" id="confirmedCount">0</div></div>
+      <div class="stat-card" data-tab="completed"><h4>🎉 Completed</h4><div class="value" id="completedCount">0</div></div>
+      <div class="stat-card" data-tab="all"><h4>💰 Revenue</h4><div class="value" id="totalRevenue">0 EGP</div></div>
+    </div>
+
+    <button id="showSummaryBtn" class="summary-btn">📊 View Products Summary</button>
+
+    <div class="tabs-container">
+      <button class="tab-btn active" data-status="pending">📋 Pending</button>
+      <button class="tab-btn" data-status="confirmed">✅ Confirmed</button>
+      <button class="tab-btn" data-status="completed">🎉 Completed</button>
+      <button class="tab-btn" data-status="all">📦 All Orders</button>
     </div>
 
     <div id="ordersContainer" class="orders-grid">
-      <div class="empty-state">
-        <h3>📋 Loading orders...</h3>
-        <p>Please wait while we fetch data from Firebase</p>
-      </div>
+      <div class="empty-state"><h3>📋 Loading orders...</h3></div>
     </div>
-    <footer>
-      <p>Cura Store Admin Panel — Secure multi-level access system</p>
-    </footer>
+    <footer><p>Cura Store Professional Admin System — Complete Order Management</p></footer>
   </div>
 </div>
 
-<!-- Firebase SDK -->
+<!-- Product Summary Modal -->
+<div id="productSummaryModal" class="product-summary-modal">
+  <div class="product-summary-content">
+    <h3 style="margin-bottom: 16px;">📊 Products Ordered Summary</h3>
+    <div id="productSummaryList"></div>
+    <button id="closeSummaryBtn" style="margin-top: 16px; padding: 10px; background: #1a1a2e; color: white; border: none; border-radius: 40px; width: 100%; cursor: pointer;">Close</button>
+  </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 <script>
   // ============================================================
-  // 🔐 ACCESS CONTROL SYSTEM - 3 LEVELS WITH PASSWORDS
+  // USERS CONFIGURATION
   // ============================================================
-  
   const USERS = {
-    "owner": {
-      name: "The Boss",
-      role: "owner",
-      roleName: "👑 OWNER",
-      password: "CuraStore@2024#MasterKey",
-      access: "full",  // Can see all orders, export everything
-      description: "Full access to all orders and exports"
-    },
-    "male_admin": {
-      name: "Omar",
-      role: "male_admin",
-      roleName: "👨 MALE ADMIN",
-      password: "Omar@Dental2024#Secure",
-      access: "male_only",  // Can only see male orders
-      description: "Responsible for male customers only"
-    },
-    "female_admin": {
-      name: "Ranim",
-      role: "female_admin",
-      roleName: "👩 FEMALE ADMIN",
-      password: "Ranim@Dental2024#Secure",
-      access: "female_only",  // Can only see female orders
-      description: "Responsible for female customers only"
-    },
-    "accountant": {
-      name: "Accountant",
-      role: "accountant",
-      roleName: "📊 ACCOUNTANT",
-      password: "Acc@CuraStore#2024#Finance",
-      access: "full_with_export",  // Can see all and export
-      description: "Can view all orders and export data"
-    }
+    "owner": { name: "Youssef", role: "owner", roleName: "👑 OWNER", password: "CuraStore@2024#MasterKey", access: "full", whatsappNumber: "201031718103", paymentNumber: "201063919580" },
+    "male_admin": { name: "Omar", role: "male_admin", roleName: "👨 MALE ADMIN", password: "Omar@Dental2024#Secure", access: "male_only", whatsappNumber: "201031718103", paymentNumber: "201063919580" },
+    "female_admin": { name: "Ranim", role: "female_admin", roleName: "👩 FEMALE ADMIN", password: "Ranim@Dental2024#Secure", access: "female_only", whatsappNumber: "201064112263", paymentNumber: "201064112263" },
+    "accountant": { name: "Accountant", role: "accountant", roleName: "📊 ACCOUNTANT", password: "Acc@CuraStore#2024#Finance", access: "full_with_export", whatsappNumber: "201031718103", paymentNumber: "201063919580" }
   };
 
-  // Current logged in user
   let currentUser = null;
   let allOrders = [];
-  let currentFilter = "all";
+  let currentStatusFilter = "pending";
   let unsubscribeFirestore = null;
 
-  // Helper functions
+  // Money data
+  let moneyData = { cash: 0, vodafone: 0, instapay: 0 };
+  let staffMoney = { "Youssef": { cash: 0, vodafone: 0, instapay: 0 }, "Omar": { cash: 0, vodafone: 0, instapay: 0 }, "Ranim": { cash: 0, vodafone: 0, instapay: 0 }, "Accountant": { cash: 0, vodafone: 0, instapay: 0 } };
+
+  function loadMoneyData() {
+    const saved = localStorage.getItem('cura_money_data');
+    if (saved) { try { const p = JSON.parse(saved); moneyData = p.moneyData || moneyData; staffMoney = p.staffMoney || staffMoney; } catch(e) {} }
+    updateMoneyUI();
+  }
+
+  function saveMoneyData() { localStorage.setItem('cura_money_data', JSON.stringify({ moneyData, staffMoney })); }
+  function updateStaffMoney(name, type, amount, isAdd) { if (staffMoney[name]) { staffMoney[name][type] = isAdd ? (staffMoney[name][type] + amount) : Math.max(0, staffMoney[name][type] - amount); saveMoneyData(); } }
+
+  function updateMoneyUI() {
+    document.getElementById('cashAmount').innerText = moneyData.cash.toLocaleString() + ' EGP';
+    document.getElementById('vodafoneAmount').innerText = moneyData.vodafone.toLocaleString() + ' EGP';
+    document.getElementById('instapayAmount').innerText = moneyData.instapay.toLocaleString() + ' EGP';
+    document.getElementById('totalBalance').innerText = (moneyData.cash + moneyData.vodafone + moneyData.instapay).toLocaleString() + ' EGP';
+  }
+
   function formatDate(timestamp) {
-    if (!timestamp) return "Unknown date";
-    try {
-      let date;
-      if (timestamp.toDate && typeof timestamp.toDate === 'function') {
-        date = timestamp.toDate();
-      } else if (timestamp.seconds) {
-        date = new Date(timestamp.seconds * 1000);
-      } else if (timestamp instanceof Date) {
-        date = timestamp;
-      } else {
-        date = new Date(timestamp);
-      }
-      if (isNaN(date.getTime())) return "Recent";
-      return date.toLocaleString('en-EG', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-    } catch(e) {
-      return "Recent";
-    }
+    if (!timestamp) return "Unknown";
+    try { let d = timestamp.toDate ? timestamp.toDate() : new Date(timestamp); return d.toLocaleString('en-EG'); } catch(e) { return "Recent"; }
   }
 
-  function escapeHtml(str) {
-    if (!str) return '';
-    return String(str).replace(/[&<>]/g, function(m) {
-      if (m === '&') return '&amp;';
-      if (m === '<') return '&lt;';
-      if (m === '>') return '&gt;';
-      return m;
-    });
-  }
+  function escapeHtml(str) { return String(str || '').replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'); }
 
-  // Filter orders based on user access and current filter
   function getFilteredOrders() {
     if (!currentUser) return [];
-    
-    // First filter by user access level
-    let accessibleOrders = allOrders;
-    
-    if (currentUser.access === 'male_only') {
-      accessibleOrders = allOrders.filter(order => {
-        const gender = order.data?.customer?.gender || order.data?.gender;
-        return gender === 'Male';
-      });
-    } else if (currentUser.access === 'female_only') {
-      accessibleOrders = allOrders.filter(order => {
-        const gender = order.data?.customer?.gender || order.data?.gender;
-        return gender === 'Female';
-      });
-    }
-    
-    // Then apply current filter button
-    if (currentFilter === 'male') {
-      return accessibleOrders.filter(order => {
-        const gender = order.data?.customer?.gender || order.data?.gender;
-        return gender === 'Male';
-      });
-    } else if (currentFilter === 'female') {
-      return accessibleOrders.filter(order => {
-        const gender = order.data?.customer?.gender || order.data?.gender;
-        return gender === 'Female';
-      });
-    }
-    
-    return accessibleOrders;
+    let filtered = allOrders;
+    if (currentUser.access === 'male_only') filtered = filtered.filter(o => (o.data?.customer?.gender || o.data?.gender) === 'Male');
+    if (currentUser.access === 'female_only') filtered = filtered.filter(o => (o.data?.customer?.gender || o.data?.gender) === 'Female');
+    if (currentStatusFilter !== 'all') filtered = filtered.filter(o => o.data?.status === currentStatusFilter);
+    return filtered;
   }
 
-  function updateStats(orders) {
-    const total = orders.length;
-    const totalRevenue = orders.reduce((sum, order) => {
-      const amount = order.data?.totalAmount || 0;
-      return sum + amount;
-    }, 0);
+  function updateStats() {
+    document.getElementById('pendingCount').innerText = allOrders.filter(o => o.data?.status === 'pending').length;
+    document.getElementById('confirmedCount').innerText = allOrders.filter(o => o.data?.status === 'confirmed').length;
+    document.getElementById('completedCount').innerText = allOrders.filter(o => o.data?.status === 'completed').length;
+    document.getElementById('totalRevenue').innerText = allOrders.filter(o => o.data?.status === 'completed').reduce((s, o) => s + (o.data?.totalAmount || 0), 0).toLocaleString() + ' EGP';
+  }
+
+  // Professional WhatsApp Message
+  function sendWhatsAppConfirmation(order) {
+    const data = order.data;
+    const customerName = data.customer?.name || data.name;
+    const phone = data.customer?.phone || data.phone;
+    const total = data.totalAmount || 0;
+    const deposit = Math.ceil(total / 2);
+    const adminName = currentUser.name;
+    const paymentNumber = currentUser.paymentNumber;
     
-    const maleOrders = orders.filter(order => {
-      const gender = order.data?.customer?.gender || order.data?.gender;
-      return gender === 'Male';
-    }).length;
+    let itemsText = '';
+    (data.items || []).forEach(item => { itemsText += `  • ${item.name || item.id}: ${item.qty} × ${item.price} EGP\n`; });
     
-    const femaleOrders = orders.filter(order => {
-      const gender = order.data?.customer?.gender || order.data?.gender;
-      return gender === 'Female';
-    }).length;
+    const message = `🦷 *CURA STORE* - Order Confirmation ✅\n\n` +
+      `Dear *${customerName}*,\n\n` +
+      `I'm *${adminName}* from Cura Store. Your order has been confirmed!\n\n` +
+      `📦 *Order Details:*\n${itemsText}\n` +
+      `💰 *Total Amount:* ${total} EGP\n` +
+      `💵 *Required Deposit (50%):* ${deposit} EGP\n\n` +
+      `📱 *Payment Methods:*\n` +
+      `   • Vodafone Cash: ${paymentNumber}\n` +
+      `   • InstaPay: ${paymentNumber}\n\n` +
+      `✨ *Thank you for choosing Cura Store!* ✨\n\n` +
+      `We look forward to serving you again. 🙏`;
     
-    document.getElementById('totalOrders').innerText = total;
-    document.getElementById('totalRevenue').innerText = totalRevenue.toLocaleString() + ' EGP';
-    document.getElementById('maleOrders').innerText = maleOrders;
-    document.getElementById('femaleOrders').innerText = femaleOrders;
+    const cleanPhone = phone.replace(/[^0-9]/g, '');
+    const waLink = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+    window.open(waLink, '_blank');
+  }
+
+  // Completion WhatsApp Message
+  function sendCompletionMessage(order) {
+    const data = order.data;
+    const customerName = data.customer?.name || data.name;
+    const phone = data.customer?.phone || data.phone;
+    const total = data.totalAmount || 0;
+    const adminName = currentUser.name;
+    
+    let itemsText = '';
+    (data.items || []).forEach(item => { itemsText += `  • ${item.name || item.id}: ${item.qty} × ${item.price} EGP\n`; });
+    
+    const message = `🦷 *CURA STORE* - Order Completed 🎉\n\n` +
+      `Dear *${customerName}*,\n\n` +
+      `I'm *${adminName}* from Cura Store.\n\n` +
+      `Your order has been *completed successfully*! ✅\n\n` +
+      `📦 *Delivered Items:*\n${itemsText}\n` +
+      `💰 *Total Paid:* ${total} EGP\n\n` +
+      `🌟 Thank you for shopping with Cura Store!\n` +
+      `We hope to see you again soon. 🙏\n\n` +
+      `*Rate your experience:* ⭐⭐⭐⭐⭐`;
+    
+    const cleanPhone = phone.replace(/[^0-9]/g, '');
+    const waLink = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+    window.open(waLink, '_blank');
+  }
+
+  async function updateOrderStatus(orderId, newStatus) {
+    const config = { apiKey: "AIzaSyD2VKfAXUb0yMb5gC78GSN5j1WPxMjLO0A", authDomain: "cura-store-276f6.firebaseapp.com", projectId: "cura-store-276f6", storageBucket: "cura-store-276f6.firebasestorage.app", messagingSenderId: "439959431920", appId: "1:439959431920:web:e5bf626018f5ee954a7035" };
+    if (!firebase.apps.length) firebase.initializeApp(config);
+    const db = firebase.firestore();
+    try {
+      await db.collection("orders").doc(orderId).update({ status: newStatus, updatedAt: new Date() });
+      const order = allOrders.find(o => o.id === orderId);
+      if (newStatus === 'confirmed' && order) sendWhatsAppConfirmation(order);
+      if (newStatus === 'completed' && order) sendCompletionMessage(order);
+    } catch(e) { console.error(e); alert("Error updating order"); }
+  }
+
+  async function deleteOrder(orderId) {
+    if (!confirm("⚠️ Are you sure you want to delete this order?")) return;
+    if (!confirm("⚠️ LAST WARNING: This action is permanent! Delete this order?")) return;
+    const config = { apiKey: "AIzaSyD2VKfAXUb0yMb5gC78GSN5j1WPxMjLO0A", authDomain: "cura-store-276f6.firebaseapp.com", projectId: "cura-store-276f6", storageBucket: "cura-store-276f6.firebasestorage.app", messagingSenderId: "439959431920", appId: "1:439959431920:web:e5bf626018f5ee954a7035" };
+    if (!firebase.apps.length) firebase.initializeApp(config);
+    const db = firebase.firestore();
+    try { await db.collection("orders").doc(orderId).delete(); alert("✅ Order deleted"); } catch(e) { alert("Error deleting order"); }
+  }
+
+  function showProductSummary() {
+    const productMap = new Map();
+    allOrders.forEach(order => {
+      const status = order.data?.status;
+      if (status === 'pending' || status === 'confirmed') {
+        (order.data?.items || []).forEach(item => {
+          const name = item.name || item.id;
+          productMap.set(name, (productMap.get(name) || 0) + (item.qty || 0));
+        });
+      }
+    });
+    let html = '';
+    if (productMap.size === 0) html = '<div style="text-align:center; padding:20px;">No pending/confirmed orders</div>';
+    else for (let [name, qty] of productMap) html += `<div class="product-summary-item"><span>${escapeHtml(name)}</span><span style="font-weight:700;">× ${qty}</span></div>`;
+    document.getElementById('productSummaryList').innerHTML = html;
+    document.getElementById('productSummaryModal').style.display = 'flex';
   }
 
   function renderOrders() {
     const container = document.getElementById('ordersContainer');
-    const filteredOrders = getFilteredOrders();
+    const filtered = getFilteredOrders();
+    updateStats();
+    if (!filtered.length) { container.innerHTML = '<div class="empty-state"><h3>📭 No orders found</h3></div>'; return; }
     
-    updateStats(filteredOrders);
-    
-    if (!filteredOrders || filteredOrders.length === 0) {
-      container.innerHTML = `
-        <div class="empty-state">
-          <h3>📭 No orders available</h3>
-          <p>No orders match your current view.</p>
-        </div>
-      `;
-      return;
-    }
-    
-    let ordersHTML = '';
-    
-    filteredOrders.forEach(order => {
-      const orderData = order.data;
-      const docId = order.id;
-      const createdAt = orderData.createdAt || orderData.time;
-      const formattedDate = formatDate(createdAt);
+    let html = '';
+    filtered.forEach(order => {
+      const d = order.data;
+      const status = d.status || 'pending';
+      const gender = d.customer?.gender || d.gender;
+      let actions = '';
       
-      let customerName = orderData.customer?.name || orderData.name || 'N/A';
-      let phone = orderData.customer?.phone || orderData.phone || 'N/A';
-      let address = orderData.customer?.address || orderData.address || 'N/A';
-      let gender = orderData.customer?.gender || orderData.gender || 'Not specified';
-      
-      let items = [];
-      let totalAmount = orderData.totalAmount || 0;
-      
-      if (orderData.items && Array.isArray(orderData.items)) {
-        items = orderData.items;
-        if (!totalAmount) {
-          totalAmount = items.reduce((sum, item) => sum + (item.totalPrice || (item.price * item.qty) || 0), 0);
-        }
+      if (status === 'pending') {
+        actions = `<div class="order-actions"><button class="action-btn confirm-btn" onclick="updateOrderStatus('${order.id}', 'confirmed')">✅ Confirm Order</button><button class="action-btn delete-btn" onclick="deleteOrder('${order.id}')">🗑 Delete</button></div>`;
+      } else if (status === 'confirmed') {
+        actions = `<div class="order-actions"><button class="action-btn complete-btn" onclick="updateOrderStatus('${order.id}', 'completed')">🎉 Mark Completed</button><button class="action-btn whatsapp-btn" onclick="sendWhatsAppConfirmationById('${order.id}')">💬 WhatsApp</button><button class="action-btn delete-btn" onclick="deleteOrder('${order.id}')">🗑 Delete</button></div>`;
+      } else if (status === 'completed') {
+        actions = `<div class="order-actions"><button class="action-btn whatsapp-btn" onclick="sendCompletionMessageById('${order.id}')">💬 WhatsApp</button><button class="action-btn delete-btn" onclick="deleteOrder('${order.id}')">🗑 Delete</button></div>`;
       }
       
-      const genderClass = gender === 'Male' ? 'gender-male' : (gender === 'Female' ? 'gender-female' : '');
-      
-      ordersHTML += `
-        <div class="order-card">
-          <div class="order-header">
-            <span class="order-id">#${docId.slice(0, 8)}...</span>
-            <span class="order-date">📅 ${formattedDate}</span>
-          </div>
-          <div class="order-body">
-            <div class="customer-info">
-              <p><strong>👤 Name:</strong> ${escapeHtml(customerName)}</p>
-              <p><strong>📞 Phone:</strong> ${escapeHtml(phone)}</p>
-              <p><strong>📍 Address:</strong> ${escapeHtml(address)}</p>
-              <p><strong>⚥ Gender:</strong> <span class="gender-badge ${genderClass}">${escapeHtml(gender)}</span></p>
-            </div>
-            
-            <div class="items-list">
-              <div class="items-title">🛍️ Order Items (${items.length})</div>
-              ${items.map(item => `
-                <div class="item-row">
-                  <span class="item-name">${escapeHtml(item.name || item.id || 'Product')}</span>
-                  <span class="item-qty">✕ ${item.qty}</span>
-                  <span class="item-price">${(item.price || 0)} EGP</span>
-                </div>
-              `).join('')}
-            </div>
-            
-            <div class="order-total">
-              Total: ${totalAmount} EGP
-            </div>
-          </div>
-        </div>
-      `;
+      html += `<div class="order-card ${status}"><div class="order-header"><span class="order-id">#${order.id.slice(0,8)}</span><span class="order-date">📅 ${formatDate(d.createdAt)}</span><span class="order-status status-${status}">${status === 'pending' ? '⏳ Pending' : (status === 'confirmed' ? '✅ Confirmed' : '🎉 Completed')}</span></div><div class="order-body"><div class="customer-info"><p><strong>👤 Name:</strong> ${escapeHtml(d.customer?.name || d.name)}</p><p><strong>📞 Phone:</strong> ${escapeHtml(d.customer?.phone || d.phone)}</p><p><strong>📍 Address:</strong> ${escapeHtml(d.customer?.address || d.address)}</p><p><strong>⚥ Gender:</strong> <span class="gender-badge gender-${gender === 'Male' ? 'male' : 'female'}">${escapeHtml(gender)}</span></p></div><div class="items-list"><div class="items-title">🛍️ Order Items</div>${(d.items || []).map(item => `<div class="item-row"><span>${escapeHtml(item.name)}</span><span>✕ ${item.qty}</span><span>${item.price} EGP</span></div>`).join('')}</div><div class="order-total">Total: ${d.totalAmount || 0} EGP</div>${actions}</div></div>`;
     });
-    
-    container.innerHTML = ordersHTML;
+    container.innerHTML = html;
   }
 
-  // Export to Excel (CSV format)
-  function exportToExcel() {
-    const filteredOrders = getFilteredOrders();
-    
-    if (filteredOrders.length === 0) {
-      alert("No orders to export!");
-      return;
-    }
-    
-    let csvRows = [];
-    csvRows.push(['Order ID', 'Date', 'Customer Name', 'Phone', 'Address', 'Gender', 'Items', 'Total Amount (EGP)']);
-    
-    filteredOrders.forEach(order => {
-      const orderData = order.data;
-      const docId = order.id;
-      const createdAt = orderData.createdAt || orderData.time;
-      const formattedDate = formatDate(createdAt);
-      
-      let customerName = orderData.customer?.name || orderData.name || 'N/A';
-      let phone = orderData.customer?.phone || orderData.phone || 'N/A';
-      let address = orderData.customer?.address || orderData.address || 'N/A';
-      let gender = orderData.customer?.gender || orderData.gender || 'N/A';
-      let totalAmount = orderData.totalAmount || 0;
-      
-      let itemsText = '';
-      if (orderData.items && Array.isArray(orderData.items)) {
-        itemsText = orderData.items.map(item => `${item.name || item.id} (x${item.qty})`).join('; ');
-      }
-      
-      csvRows.push([
-        docId,
-        formattedDate,
-        customerName,
-        phone,
-        address,
-        gender,
-        itemsText,
-        totalAmount
-      ]);
-    });
-    
-    const csvContent = csvRows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
-    const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    link.href = url;
-    link.setAttribute('download', `cura_store_orders_${new Date().toISOString().slice(0,19)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-    
-    alert(`✅ Exported ${filteredOrders.length} orders successfully!`);
-  }
+  function sendWhatsAppConfirmationById(id) { const order = allOrders.find(o => o.id === id); if (order) sendWhatsAppConfirmation(order); }
+  function sendCompletionMessageById(id) { const order = allOrders.find(o => o.id === id); if (order) sendCompletionMessage(order); }
 
-  // Initialize Firebase and start listening
+  window.updateOrderStatus = updateOrderStatus;
+  window.deleteOrder = deleteOrder;
+  window.sendWhatsAppConfirmationById = sendWhatsAppConfirmationById;
+  window.sendCompletionMessageById = sendCompletionMessageById;
+
   function startFirebaseListener() {
-    const firebaseConfig = {
-      apiKey: "AIzaSyD2VKfAXUb0yMb5gC78GSN5j1WPxMjLO0A",
-      authDomain: "cura-store-276f6.firebaseapp.com",
-      projectId: "cura-store-276f6",
-      storageBucket: "cura-store-276f6.firebasestorage.app",
-      messagingSenderId: "439959431920",
-      appId: "1:439959431920:web:e5bf626018f5ee954a7035",
-      measurementId: "G-707WFFRFNQ"
-    };
-    
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
+    const config = { apiKey: "AIzaSyD2VKfAXUb0yMb5gC78GSN5j1WPxMjLO0A", authDomain: "cura-store-276f6.firebaseapp.com", projectId: "cura-store-276f6", storageBucket: "cura-store-276f6.firebasestorage.app", messagingSenderId: "439959431920", appId: "1:439959431920:web:e5bf626018f5ee954a7035" };
+    if (!firebase.apps.length) firebase.initializeApp(config);
     const db = firebase.firestore();
-    
-    if (unsubscribeFirestore) {
-      unsubscribeFirestore();
-    }
-    
-    unsubscribeFirestore = db.collection("orders")
-      .orderBy("createdAt", "desc")
-      .onSnapshot((snapshot) => {
-        const ordersArray = [];
-        snapshot.forEach(doc => {
-          ordersArray.push({
-            id: doc.id,
-            data: doc.data()
-          });
-        });
-        allOrders = ordersArray;
-        renderOrders();
-      }, (error) => {
-        console.error("Firestore error:", error);
-        document.getElementById('ordersContainer').innerHTML = `
-          <div class="empty-state">
-            <h3>⚠️ Connection Error</h3>
-            <p>Unable to load orders. Please check your connection.</p>
-          </div>
-        `;
-      });
+    if (unsubscribeFirestore) unsubscribeFirestore();
+    unsubscribeFirestore = db.collection("orders").orderBy("createdAt", "desc").onSnapshot(snap => { allOrders = snap.docs.map(doc => ({ id: doc.id, data: doc.data() })); renderOrders(); });
   }
 
-  // Login function
-  function login(password) {
-    for (const [key, user] of Object.entries(USERS)) {
-      if (user.password === password) {
-        currentUser = user;
-        localStorage.setItem('cura_admin_session', JSON.stringify({
-          username: user.name,
-          role: user.role,
-          loginTime: new Date().toISOString()
-        }));
-        return true;
-      }
-    }
-    return false;
-  }
-
-  function logout() {
-    currentUser = null;
-    localStorage.removeItem('cura_admin_session');
-    if (unsubscribeFirestore) {
-      unsubscribeFirestore();
-      unsubscribeFirestore = null;
-    }
-    document.getElementById('loginSection').style.display = 'block';
-    document.getElementById('dashboardSection').style.display = 'none';
-    document.getElementById('passwordInput').value = '';
-  }
-
-  function checkExistingSession() {
-    const savedSession = localStorage.getItem('cura_admin_session');
-    if (savedSession) {
-      try {
-        const session = JSON.parse(savedSession);
-        const user = Object.values(USERS).find(u => u.name === session.username);
-        if (user) {
-          currentUser = user;
-          return true;
-        }
-      } catch(e) {}
-    }
-    return false;
-  }
-
+  function login(pwd) { for (let u of Object.values(USERS)) if (u.password === pwd) { currentUser = u; localStorage.setItem('cura_admin_session', JSON.stringify({ username: u.name, role: u.role })); return true; } return false; }
+  function logout() { currentUser = null; localStorage.removeItem('cura_admin_session'); if (unsubscribeFirestore) unsubscribeFirestore(); document.getElementById('loginSection').style.display = 'block'; document.getElementById('dashboardSection').style.display = 'none'; }
+  
   function initDashboard() {
     document.getElementById('userRoleBadge').innerHTML = currentUser.roleName;
-    document.getElementById('userNameDisplay').innerHTML = `${currentUser.name}`;
-    document.getElementById('userRoleBadge').className = `user-role role-${currentUser.role === 'owner' ? 'owner' : (currentUser.role === 'male_admin' ? 'male-admin' : (currentUser.role === 'female_admin' ? 'female-admin' : 'accountant'))}`;
-    
+    document.getElementById('userNameDisplay').innerHTML = currentUser.name;
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('dashboardSection').style.display = 'block';
-    
+    loadMoneyData();
     startFirebaseListener();
   }
 
   // Event Listeners
-  document.getElementById('loginBtn').addEventListener('click', () => {
-    const password = document.getElementById('passwordInput').value;
-    if (login(password)) {
-      document.getElementById('loginError').style.display = 'none';
-      initDashboard();
-    } else {
-      document.getElementById('loginError').style.display = 'block';
-    }
-  });
-
-  document.getElementById('passwordInput').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      document.getElementById('loginBtn').click();
-    }
-  });
-
+  document.getElementById('loginBtn')?.addEventListener('click', () => { if (login(document.getElementById('passwordInput').value)) { document.getElementById('loginError').style.display = 'none'; initDashboard(); } else { document.getElementById('loginError').style.display = 'block'; } });
+  document.getElementById('passwordInput')?.addEventListener('keypress', e => { if (e.key === 'Enter') document.getElementById('loginBtn').click(); });
   document.getElementById('logoutBtn')?.addEventListener('click', logout);
-  document.getElementById('exportExcelBtn')?.addEventListener('click', exportToExcel);
-  
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentFilter = btn.getAttribute('data-filter');
-      renderOrders();
-    });
-  });
+  document.getElementById('showSummaryBtn')?.addEventListener('click', showProductSummary);
+  document.getElementById('closeSummaryBtn')?.addEventListener('click', () => document.getElementById('productSummaryModal').style.display = 'none');
+  document.querySelectorAll('.tab-btn').forEach(btn => { btn.addEventListener('click', () => { document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); currentStatusFilter = btn.getAttribute('data-status'); renderOrders(); }); });
+  document.querySelectorAll('.stat-card').forEach(card => { card.addEventListener('click', () => { const tab = card.getAttribute('data-tab'); if (tab) document.querySelector(`.tab-btn[data-status="${tab}"]`)?.click(); }); });
 
-  // Check for existing session on page load
-  if (checkExistingSession()) {
-    initDashboard();
-  } else {
-    document.getElementById('loginSection').style.display = 'block';
-    document.getElementById('dashboardSection').style.display = 'none';
-  }
+  // Money handlers
+  document.getElementById('addCashBtn')?.addEventListener('click', () => { let v = parseInt(document.getElementById('cashInput').value) || 0; moneyData.cash += v; saveMoneyData(); updateMoneyUI(); updateStaffMoney(currentUser.name, 'cash', v, true); document.getElementById('cashInput').value = ''; });
+  document.getElementById('subtractCashBtn')?.addEventListener('click', () => { let v = parseInt(document.getElementById('cashInput').value) || 0; moneyData.cash = Math.max(0, moneyData.cash - v); saveMoneyData(); updateMoneyUI(); updateStaffMoney(currentUser.name, 'cash', v, false); document.getElementById('cashInput').value = ''; });
+  document.getElementById('addVodafoneBtn')?.addEventListener('click', () => { let v = parseInt(document.getElementById('vodafoneInput').value) || 0; moneyData.vodafone += v; saveMoneyData(); updateMoneyUI(); updateStaffMoney(currentUser.name, 'vodafone', v, true); document.getElementById('vodafoneInput').value = ''; });
+  document.getElementById('subtractVodafoneBtn')?.addEventListener('click', () => { let v = parseInt(document.getElementById('vodafoneInput').value) || 0; moneyData.vodafone = Math.max(0, moneyData.vodafone - v); saveMoneyData(); updateMoneyUI(); updateStaffMoney(currentUser.name, 'vodafone', v, false); document.getElementById('vodafoneInput').value = ''; });
+  document.getElementById('addInstapayBtn')?.addEventListener('click', () => { let v = parseInt(document.getElementById('instapayInput').value) || 0; moneyData.instapay += v; saveMoneyData(); updateMoneyUI(); updateStaffMoney(currentUser.name, 'instapay', v, true); document.getElementById('instapayInput').value = ''; });
+  document.getElementById('subtractInstapayBtn')?.addEventListener('click', () => { let v = parseInt(document.getElementById('instapayInput').value) || 0; moneyData.instapay = Math.max(0, moneyData.instapay - v); saveMoneyData(); updateMoneyUI(); updateStaffMoney(currentUser.name, 'instapay', v, false); document.getElementById('instapayInput').value = ''; });
+
+  if (localStorage.getItem('cura_admin_session')) { let sess = JSON.parse(localStorage.getItem('cura_admin_session')); let u = Object.values(USERS).find(u => u.name === sess.username); if (u) { currentUser = u; initDashboard(); } else document.getElementById('loginSection').style.display = 'block'; } 
+  else document.getElementById('loginSection').style.display = 'block';
 </script>
-
-<!-- ============================================================ -->
-<!-- 📋 PASSWORDS LIST (For Admin Reference - Remove in production) -->
-<!-- ============================================================ -->
-<!--
-🔐 ACCESS CREDENTIALS - CURA STORE ADMIN SYSTEM:
-
-1️⃣ OWNER (Full Access - Can see everything)
-   👑 Name: يوسف
-   🔑 Password: CuraStore@2024#MasterKey
-   📝 Role: Can view all orders (male & female), export data
-
-2️⃣ MALE ADMIN (Male orders only)
-   👨 Name: Omar
-   🔑 Password: Omar@Dental2024#Secure
-   📝 Role: Can ONLY see orders from male customers
-
-3️⃣ FEMALE ADMIN (Female orders only)
-   👩 Name: Ranim
-   🔑 Password: Ranim@Dental2024#Secure
-   📝 Role: Can ONLY see orders from female customers
-
-4️⃣ ACCOUNTANT (Full access + Export)
-   📊 Name: Accountant
-   🔑 Password: Acc@CuraStore#2024#Finance
-   📝 Role: Can view all orders AND export to Excel/CSV
-
-⚠️ IMPORTANT: 
-- Each admin sees only what they are authorized to see
-- Owner and Accountant can see all orders
-- Male admin only sees male customer orders
-- Female admin only sees female customer orders
-- Accountant can export data to Excel
--->
-<!-- ============================================================ -->
 </body>
 </html>
