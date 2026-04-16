@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Cura Store | Admin Dashboard - Multi-Level Access</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f7fb;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+
+    /* Login Container */
+    .login-container {
+      max-width: 450px;
+      margin: 80px auto;
+      background: white;
+      border-radius: 32px;
+      padding: 40px 32px;
+      box-shadow: 0 20px 35px -10px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    .login-container h2 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      color: #1a1a2e;
+    }
+
+    .login-container p {
+      color: #64748b;
+      margin-bottom: 28px;
+      font-size: 0.85rem;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 14px 18px;
+      border: 2px solid #e2e8f0;
+      border-radius: 50px;
+      font-size: 1rem;
+      margin-bottom: 18px;
+      transition: 0.2s;
+      font-family: inherit;
+    }
+
+    .login-container input:focus {
+      outline: none;
+      border-color: #1a1a2e;
+    }
+
+    .login-container button {
+      width: 100%;
+      background: #1a1a2e;
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .login-container button:hover {
+      background: #16213e;
+      transform: scale(1.02);
+    }
+
+    .error-msg {
+      color: #dc2626;
+      font-size: 0.8rem;
+      margin-top: 12px;
+      display: none;
+    }
+
+    /* Admin Dashboard */
+    .dashboard-container {
+      display: none;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: white;
+      padding: 8px 20px;
+      border-radius: 60px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .user-role {
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 4px 12px;
+      border-radius: 30px;
+    }
+
+    .role-owner { background: #fef3c7; color: #92400e; }
+    .role-male-admin { background: #dbeafe; color: #1e40af; }
+    .role-female-admin { background: #fce7f3; color: #be185d; }
+    .role-accountant { background: #d1fae5; color: #065f46; }
+
+    .logout-btn {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.75rem;
+      transition: 0.2s;
+    }
+
+    .logout-btn:hover {
+      background: #dc2626;
+    }
+
+    .stats {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 18px 24px;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .stat-card h4 {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    .stat-card .value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      background: white;
+      padding: 16px;
+      border-radius: 20px;
+    }
+
+    .filter-btn {
+      background: #f1f5f9;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.8rem;
+      transition: 0.2s;
+    }
+
+    .filter-btn.active {
+      background: #1a1a2e;
+      color: white;
+    }
+
+    .export-btn {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.8rem;
+      margin-left: auto;
+    }
+
+    .export-btn:hover {
+      background: #059669;
+    }
+
+    .orders-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 20px;
+    }
+
+    .order-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      overflow: hidden;
+      transition: all 0.2s ease;
+      border: 1px solid #e9ecef;
+    }
+
+    .order-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+    }
+
+    .order-header {
+      background: #1a1a2e;
+      color: white;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .order-id {
+      font-size: 0.65rem;
+      font-family: monospace;
+      background: rgba(255,255,255,0.2);
+      padding: 3px 8px;
+      border-radius: 30px;
+    }
+
+    .order-date {
+      font-size: 0.65rem;
+      opacity: 0.85;
+    }
+
+    .order-body {
+      padding: 16px;
+    }
+
+    .customer-info {
+      background: #f8fafc;
+      padding: 10px;
+      border-radius: 14px;
+      margin-bottom: 14px;
+    }
+
+    .customer-info p {
+      margin: 5px 0;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .customer-info strong {
+      min-width: 65px;
+      color: #334155;
+    }
+
+    .gender-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 30px;
+      font-size: 0.65rem;
+      font-weight: 600;
+    }
+
+    .gender-male { background: #dbeafe; color: #1e40af; }
+    .gender-female { background: #fce7f3; color: #be185d; }
+
+    .items-list {
+      margin: 12px 0;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 10px;
+    }
+
+    .items-title {
+      font-weight: 700;
+      font-size: 0.75rem;
+      margin-bottom: 8px;
+      color: #0f172a;
+    }
+
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.75rem;
+    }
+
+    .item-name {
+      font-weight: 500;
+      flex: 2;
+    }
+
+    .item-qty {
+      background: #e2e8f0;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.65rem;
+      margin: 0 8px;
+    }
+
+    .item-price {
+      font-weight: 600;
+      color: #2d3748;
+      min-width: 60px;
+      text-align: right;
+    }
+
+    .order-total {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 2px solid #e2e8f0;
+      text-align: right;
+      font-weight: 800;
+      font-size: 1rem;
+      color: #1e293b;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      background: white;
+      border-radius: 28px;
+      color: #64748b;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #94a3b8;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 24px;
+    }
+
+    @media (max-width: 640px) {
+      .orders-grid {
+        grid-template-columns: 1fr;
+      }
+      .export-btn {
+        margin-left: 0;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Login Section -->
+<div id="loginSection" class="login-container">
+  <h2>🔐 Cura Store</h2>
+  <p>Admin Portal — Enter your credentials</p>
+  <input type="password" id="passwordInput" placeholder="Enter Password" autocomplete="off">
+  <button id="loginBtn">Login</button>
+  <div id="loginError" class="error-msg">❌ Invalid password. Please try again.</div>
+</div>
+
+<!-- Admin Dashboard Section -->
+<div id="dashboardSection" class="dashboard-container">
+  <div class="container">
+    <div class="header">
+      <h1>🦷 Cura Store | Admin Dashboard</h1>
+      <div class="user-info">
+        <span id="userRoleBadge" class="user-role"></span>
+        <span id="userNameDisplay" style="font-weight:500;"></span>
+        <button id="logoutBtn" class="logout-btn">🚪 Logout</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <h4>Total Orders</h4>
+        <div class="value" id="totalOrders">0</div>
+      </div>
+      <div class="stat-card">
+        <h4>Total Revenue</h4>
+        <div class="value" id="totalRevenue">0 EGP</div>
+      </div>
+      <div class="stat-card">
+        <h4>Male Orders</h4>
+        <div class="value" id="maleOrders">0</div>
+      </div>
+      <div class="stat-card">
+        <h4>Female Orders</h4>
+        <div class="value" id="femaleOrders">0</div>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">📋 All Orders</button>
+      <button class="filter-btn" data-filter="male">👨 Male Orders</button>
+      <button class="filter-btn" data-filter="female">👩 Female Orders</button>
+      <button id="exportExcelBtn" class="export-btn">📊 Export as Excel</button>
+    </div>
+
+    <div id="ordersContainer" class="orders-grid">
+      <div class="empty-state">
+        <h3>📋 Loading orders...</h3>
+        <p>Please wait while we fetch data from Firebase</p>
+      </div>
+    </div>
+    <footer>
+      <p>Cura Store Admin Panel — Secure multi-level access system</p>
+    </footer>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script>
+  // ============================================================
+  // 🔐 ACCESS CONTROL SYSTEM - 3 LEVELS WITH PASSWORDS
+  // ============================================================
+  
+  const USERS = {
+    "owner": {
+      name: "The Boss",
+      role: "owner",
+      roleName: "👑 OWNER",
+      password: "CuraStore@2024#MasterKey",
+      access: "full",  // Can see all orders, export everything
+      description: "Full access to all orders and exports"
+    },
+    "male_admin": {
+      name: "Omar",
+      role: "male_admin",
+      roleName: "👨 MALE ADMIN",
+      password: "Omar@Dental2024#Secure",
+      access: "male_only",  // Can only see male orders
+      description: "Responsible for male customers only"
+    },
+    "female_admin": {
+      name: "Ranim",
+      role: "female_admin",
+      roleName: "👩 FEMALE ADMIN",
+      password: "Ranim@Dental2024#Secure",
+      access: "female_only",  // Can only see female orders
+      description: "Responsible for female customers only"
+    },
+    "accountant": {
+      name: "Accountant",
+      role: "accountant",
+      roleName: "📊 ACCOUNTANT",
+      password: "Acc@CuraStore#2024#Finance",
+      access: "full_with_export",  // Can see all and export
+      description: "Can view all orders and export data"
+    }
+  };
+
+  // Current logged in user
+  let currentUser = null;
+  let allOrders = [];
+  let currentFilter = "all";
+  let unsubscribeFirestore = null;
+
+  // Helper functions
+  function formatDate(timestamp) {
+    if (!timestamp) return "Unknown date";
+    try {
+      let date;
+      if (timestamp.toDate && typeof timestamp.toDate === 'function') {
+        date = timestamp.toDate();
+      } else if (timestamp.seconds) {
+        date = new Date(timestamp.seconds * 1000);
+      } else if (timestamp instanceof Date) {
+        date = timestamp;
+      } else {
+        date = new Date(timestamp);
+      }
+      if (isNaN(date.getTime())) return "Recent";
+      return date.toLocaleString('en-EG', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    } catch(e) {
+      return "Recent";
+    }
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
+  }
+
+  // Filter orders based on user access and current filter
+  function getFilteredOrders() {
+    if (!currentUser) return [];
+    
+    // First filter by user access level
+    let accessibleOrders = allOrders;
+    
+    if (currentUser.access === 'male_only') {
+      accessibleOrders = allOrders.filter(order => {
+        const gender = order.data?.customer?.gender || order.data?.gender;
+        return gender === 'Male';
+      });
+    } else if (currentUser.access === 'female_only') {
+      accessibleOrders = allOrders.filter(order => {
+        const gender = order.data?.customer?.gender || order.data?.gender;
+        return gender === 'Female';
+      });
+    }
+    
+    // Then apply current filter button
+    if (currentFilter === 'male') {
+      return accessibleOrders.filter(order => {
+        const gender = order.data?.customer?.gender || order.data?.gender;
+        return gender === 'Male';
+      });
+    } else if (currentFilter === 'female') {
+      return accessibleOrders.filter(order => {
+        const gender = order.data?.customer?.gender || order.data?.gender;
+        return gender === 'Female';
+      });
+    }
+    
+    return accessibleOrders;
+  }
+
+  function updateStats(orders) {
+    const total = orders.length;
+    const totalRevenue = orders.reduce((sum, order) => {
+      const amount = order.data?.totalAmount || 0;
+      return sum + amount;
+    }, 0);
+    
+    const maleOrders = orders.filter(order => {
+      const gender = order.data?.customer?.gender || order.data?.gender;
+      return gender === 'Male';
+    }).length;
+    
+    const femaleOrders = orders.filter(order => {
+      const gender = order.data?.customer?.gender || order.data?.gender;
+      return gender === 'Female';
+    }).length;
+    
+    document.getElementById('totalOrders').innerText = total;
+    document.getElementById('totalRevenue').innerText = totalRevenue.toLocaleString() + ' EGP';
+    document.getElementById('maleOrders').innerText = maleOrders;
+    document.getElementById('femaleOrders').innerText = femaleOrders;
+  }
+
+  function renderOrders() {
+    const container = document.getElementById('ordersContainer');
+    const filteredOrders = getFilteredOrders();
+    
+    updateStats(filteredOrders);
+    
+    if (!filteredOrders || filteredOrders.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <h3>📭 No orders available</h3>
+          <p>No orders match your current view.</p>
+        </div>
+      `;
+      return;
+    }
+    
+    let ordersHTML = '';
+    
+    filteredOrders.forEach(order => {
+      const orderData = order.data;
+      const docId = order.id;
+      const createdAt = orderData.createdAt || orderData.time;
+      const formattedDate = formatDate(createdAt);
+      
+      let customerName = orderData.customer?.name || orderData.name || 'N/A';
+      let phone = orderData.customer?.phone || orderData.phone || 'N/A';
+      let address = orderData.customer?.address || orderData.address || 'N/A';
+      let gender = orderData.customer?.gender || orderData.gender || 'Not specified';
+      
+      let items = [];
+      let totalAmount = orderData.totalAmount || 0;
+      
+      if (orderData.items && Array.isArray(orderData.items)) {
+        items = orderData.items;
+        if (!totalAmount) {
+          totalAmount = items.reduce((sum, item) => sum + (item.totalPrice || (item.price * item.qty) || 0), 0);
+        }
+      }
+      
+      const genderClass = gender === 'Male' ? 'gender-male' : (gender === 'Female' ? 'gender-female' : '');
+      
+      ordersHTML += `
+        <div class="order-card">
+          <div class="order-header">
+            <span class="order-id">#${docId.slice(0, 8)}...</span>
+            <span class="order-date">📅 ${formattedDate}</span>
+          </div>
+          <div class="order-body">
+            <div class="customer-info">
+              <p><strong>👤 Name:</strong> ${escapeHtml(customerName)}</p>
+              <p><strong>📞 Phone:</strong> ${escapeHtml(phone)}</p>
+              <p><strong>📍 Address:</strong> ${escapeHtml(address)}</p>
+              <p><strong>⚥ Gender:</strong> <span class="gender-badge ${genderClass}">${escapeHtml(gender)}</span></p>
+            </div>
+            
+            <div class="items-list">
+              <div class="items-title">🛍️ Order Items (${items.length})</div>
+              ${items.map(item => `
+                <div class="item-row">
+                  <span class="item-name">${escapeHtml(item.name || item.id || 'Product')}</span>
+                  <span class="item-qty">✕ ${item.qty}</span>
+                  <span class="item-price">${(item.price || 0)} EGP</span>
+                </div>
+              `).join('')}
+            </div>
+            
+            <div class="order-total">
+              Total: ${totalAmount} EGP
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    
+    container.innerHTML = ordersHTML;
+  }
+
+  // Export to Excel (CSV format)
+  function exportToExcel() {
+    const filteredOrders = getFilteredOrders();
+    
+    if (filteredOrders.length === 0) {
+      alert("No orders to export!");
+      return;
+    }
+    
+    let csvRows = [];
+    csvRows.push(['Order ID', 'Date', 'Customer Name', 'Phone', 'Address', 'Gender', 'Items', 'Total Amount (EGP)']);
+    
+    filteredOrders.forEach(order => {
+      const orderData = order.data;
+      const docId = order.id;
+      const createdAt = orderData.createdAt || orderData.time;
+      const formattedDate = formatDate(createdAt);
+      
+      let customerName = orderData.customer?.name || orderData.name || 'N/A';
+      let phone = orderData.customer?.phone || orderData.phone || 'N/A';
+      let address = orderData.customer?.address || orderData.address || 'N/A';
+      let gender = orderData.customer?.gender || orderData.gender || 'N/A';
+      let totalAmount = orderData.totalAmount || 0;
+      
+      let itemsText = '';
+      if (orderData.items && Array.isArray(orderData.items)) {
+        itemsText = orderData.items.map(item => `${item.name || item.id} (x${item.qty})`).join('; ');
+      }
+      
+      csvRows.push([
+        docId,
+        formattedDate,
+        customerName,
+        phone,
+        address,
+        gender,
+        itemsText,
+        totalAmount
+      ]);
+    });
+    
+    const csvContent = csvRows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
+    const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.href = url;
+    link.setAttribute('download', `cura_store_orders_${new Date().toISOString().slice(0,19)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    
+    alert(`✅ Exported ${filteredOrders.length} orders successfully!`);
+  }
+
+  // Initialize Firebase and start listening
+  function startFirebaseListener() {
+    const firebaseConfig = {
+      apiKey: "AIzaSyD2VKfAXUb0yMb5gC78GSN5j1WPxMjLO0A",
+      authDomain: "cura-store-276f6.firebaseapp.com",
+      projectId: "cura-store-276f6",
+      storageBucket: "cura-store-276f6.firebasestorage.app",
+      messagingSenderId: "439959431920",
+      appId: "1:439959431920:web:e5bf626018f5ee954a7035",
+      measurementId: "G-707WFFRFNQ"
+    };
+    
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+    
+    if (unsubscribeFirestore) {
+      unsubscribeFirestore();
+    }
+    
+    unsubscribeFirestore = db.collection("orders")
+      .orderBy("createdAt", "desc")
+      .onSnapshot((snapshot) => {
+        const ordersArray = [];
+        snapshot.forEach(doc => {
+          ordersArray.push({
+            id: doc.id,
+            data: doc.data()
+          });
+        });
+        allOrders = ordersArray;
+        renderOrders();
+      }, (error) => {
+        console.error("Firestore error:", error);
+        document.getElementById('ordersContainer').innerHTML = `
+          <div class="empty-state">
+            <h3>⚠️ Connection Error</h3>
+            <p>Unable to load orders. Please check your connection.</p>
+          </div>
+        `;
+      });
+  }
+
+  // Login function
+  function login(password) {
+    for (const [key, user] of Object.entries(USERS)) {
+      if (user.password === password) {
+        currentUser = user;
+        localStorage.setItem('cura_admin_session', JSON.stringify({
+          username: user.name,
+          role: user.role,
+          loginTime: new Date().toISOString()
+        }));
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function logout() {
+    currentUser = null;
+    localStorage.removeItem('cura_admin_session');
+    if (unsubscribeFirestore) {
+      unsubscribeFirestore();
+      unsubscribeFirestore = null;
+    }
+    document.getElementById('loginSection').style.display = 'block';
+    document.getElementById('dashboardSection').style.display = 'none';
+    document.getElementById('passwordInput').value = '';
+  }
+
+  function checkExistingSession() {
+    const savedSession = localStorage.getItem('cura_admin_session');
+    if (savedSession) {
+      try {
+        const session = JSON.parse(savedSession);
+        const user = Object.values(USERS).find(u => u.name === session.username);
+        if (user) {
+          currentUser = user;
+          return true;
+        }
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function initDashboard() {
+    document.getElementById('userRoleBadge').innerHTML = currentUser.roleName;
+    document.getElementById('userNameDisplay').innerHTML = `${currentUser.name}`;
+    document.getElementById('userRoleBadge').className = `user-role role-${currentUser.role === 'owner' ? 'owner' : (currentUser.role === 'male_admin' ? 'male-admin' : (currentUser.role === 'female_admin' ? 'female-admin' : 'accountant'))}`;
+    
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('dashboardSection').style.display = 'block';
+    
+    startFirebaseListener();
+  }
+
+  // Event Listeners
+  document.getElementById('loginBtn').addEventListener('click', () => {
+    const password = document.getElementById('passwordInput').value;
+    if (login(password)) {
+      document.getElementById('loginError').style.display = 'none';
+      initDashboard();
+    } else {
+      document.getElementById('loginError').style.display = 'block';
+    }
+  });
+
+  document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      document.getElementById('loginBtn').click();
+    }
+  });
+
+  document.getElementById('logoutBtn')?.addEventListener('click', logout);
+  document.getElementById('exportExcelBtn')?.addEventListener('click', exportToExcel);
+  
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.getAttribute('data-filter');
+      renderOrders();
+    });
+  });
+
+  // Check for existing session on page load
+  if (checkExistingSession()) {
+    initDashboard();
+  } else {
+    document.getElementById('loginSection').style.display = 'block';
+    document.getElementById('dashboardSection').style.display = 'none';
+  }
+</script>
+
+<!-- ============================================================ -->
+<!-- 📋 PASSWORDS LIST (For Admin Reference - Remove in production) -->
+<!-- ============================================================ -->
+<!--
+🔐 ACCESS CREDENTIALS - CURA STORE ADMIN SYSTEM:
+
+1️⃣ OWNER (Full Access - Can see everything)
+   👑 Name: يوسف
+   🔑 Password: CuraStore@2024#MasterKey
+   📝 Role: Can view all orders (male & female), export data
+
+2️⃣ MALE ADMIN (Male orders only)
+   👨 Name: Omar
+   🔑 Password: Omar@Dental2024#Secure
+   📝 Role: Can ONLY see orders from male customers
+
+3️⃣ FEMALE ADMIN (Female orders only)
+   👩 Name: Ranim
+   🔑 Password: Ranim@Dental2024#Secure
+   📝 Role: Can ONLY see orders from female customers
+
+4️⃣ ACCOUNTANT (Full access + Export)
+   📊 Name: Accountant
+   🔑 Password: Acc@CuraStore#2024#Finance
+   📝 Role: Can view all orders AND export to Excel/CSV
+
+⚠️ IMPORTANT: 
+- Each admin sees only what they are authorized to see
+- Owner and Accountant can see all orders
+- Male admin only sees male customer orders
+- Female admin only sees female customer orders
+- Accountant can export data to Excel
+-->
+<!-- ============================================================ -->
+</body>
+</html>
