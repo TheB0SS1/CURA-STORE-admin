@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة البداية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tahoma', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255,255,255,0.95);
+            border-radius: 30px;
+            padding: 50px 40px;
+            max-width: 550px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+        }
+
+        h1 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            color: #555;
+            margin-bottom: 40px;
+            font-size: 18px;
+            border-bottom: 2px solid #ffc107;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            font-size: 24px;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .btn-yes {
+            background-color: #28a745;
+            color: white;
+            box-shadow: 0 6px 0 #1e7e34;
+        }
+
+        .btn-yes:hover {
+            background-color: #218838;
+            transform: translateY(-3px);
+            box-shadow: 0 9px 0 #1e7e34;
+        }
+
+        .btn-no {
+            background-color: #dc3545;
+            color: white;
+            box-shadow: 0 6px 0 #a71d2a;
+        }
+
+        .btn-no:hover {
+            background-color: #c82333;
+            transform: translateY(-3px);
+            box-shadow: 0 9px 0 #a71d2a;
+        }
+
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 3px 0 #1e7e34;
+        }
+
+        .btn-no:active {
+            box-shadow: 0 3px 0 #a71d2a;
+        }
+
+        .footer {
+            margin-top: 40px;
+            color: #888;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🚀 مرحباً بك</h1>
+    <div class="subtitle">هل أنت مستعد للشغل؟</div>
+    
+    <div class="buttons">
+        <button class="btn-yes" id="yesBtn">✅ نعم - مستعد</button>
+        <button class="btn-no" id="noBtn">❌ لا - مش مستعد</button>
+    </div>
+    
+    <div class="footer">
+        اضغط على أي زرار للدخول مباشرة
+    </div>
+</div>
+
+<script>
+    // جلب الأزرار
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+
+    // عند الضغط على زر "نعم"
+    yesBtn.addEventListener('click', function() {
+        // الانتقال مباشرة إلى صفحة admin.html
+        window.location.href = "admin.html";
+    });
+
+    // عند الضغط على زر "لا"
+    noBtn.addEventListener('click', function() {
+        // الانتقال مباشرة إلى صفحة admin.html
+        window.location.href = "admin.html";
+    });
+</script>
+
+</body>
+</html>
